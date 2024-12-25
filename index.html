@@ -41,14 +41,14 @@
 
                 // Get weather data
                 const weatherResponse = await fetch(
-                    `https://api.openweathermap.org/data/2.5/weather?lat=${geoData.latitude}&lon=${geoData.longitude}&units=metric&appid=5f5afb04556ad9da995ad557d60ac6cd`
+                    `https://api.openweathermap.org/data/2.5/weather?lat=${geoData.latitude}&lon=${geoData.longitude}&units=imperial&appid=5f5afb04556ad9da995ad557d60ac6cd`
                 );
                 const weatherData = await weatherResponse.json();
 
                 // Display weather information
                 document.getElementById('weather').innerHTML = `
                     Current weather in ${weatherData.name}:<br>
-                    Temperature: ${weatherData.main.temp}°C<br>
+                    Temperature: ${Math.round(weatherData.main.temp)}°F<br>
                     Condition: ${weatherData.weather[0].description}<br>
                     Humidity: ${weatherData.main.humidity}%
                 `;
