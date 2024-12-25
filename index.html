@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Flickman's Weather App</title>
+    <title>Flickman's Utility App</title>
     <style>
         body {
             font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -87,7 +87,7 @@
 
                 // Update the weather display section
                 document.getElementById('weather').innerHTML = `
-                    <div class="location header">MY LOCATION<br>${weatherData.name}</div>
+                    <div class="location"><span class="header">MY LOCATION</span>${weatherData.name}</div>
                     <div class="temperature">${Math.round(weatherData.main.temp)}°</div>
                     <div style="font-size: 48px;">${getWeatherEmoji(weatherData.weather[0].description)}</div>
                     <div class="high-low">H:${Math.round(weatherData.main.temp_max)}° L:${Math.round(weatherData.main.temp_min)}°</div>
