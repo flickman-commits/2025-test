@@ -1,18 +1,43 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>My JS Program</title>
+    <title>Flickman's Weather App</title>
 </head>
 <body>
+    <div id="ipAddress">Loading IP address...</div>
+    <div id="weather">Loading weather...</div>
     <script>
-        console.log("🎉 Welcome to my awesome website! 🎉");
-        console.log("Here's a fun fact: Did you know that honey never spoils? 🍯");
-        console.log("Let me draw you a cat:");
-        console.log(" /\\___/\\");
-        console.log("(  o o  )");
-        console.log("(  =^=  )");
-        console.log(" (______)");
-        console.log("Hello, world!");
+        // Fetch and display IP address and weather
+        async function getIPAndWeather() {
+            try {
+                // Get IP address
+                const ipResponse = await fetch('https://api.ipify.org?format=json');
+                const ipData = await ipResponse.json();
+                document.getElementById('ipAddress').innerHTML = `Your IP address is: ${ipData.ip}`;
+
+                // Get location from IP
+                const geoResponse = await fetch(`https://ipapi.co/${ipData.ip}/json/`);
+                const geoData = await geoResponse.json();
+
+                // Get weather data
+                const weatherResponse = await fetch(
+                    `https://api.openweathermap.org/data/2.5/weather?lat=${geoData.latitude}&lon=${geoData.longitude}&units=metric&appid=5f5afb04556ad9da995ad557d60ac6cd`
+                );
+                const weatherData = await weatherResponse.json();
+
+                // Display weather information
+                document.getElementById('weather').innerHTML = `
+                    Current weather in ${weatherData.name}:<br>
+                    Temperature: ${weatherData.main.temp}°C<br>
+                    Condition: ${weatherData.weather[0].description}<br>
+                    Humidity: ${weatherData.main.humidity}%
+                `;
+            } catch (error) {
+                document.getElementById('weather').innerHTML = 'Unable to fetch weather data';
+                console.error(error);
+            }
+        }
+        getIPAndWeather();
     </script>
 </body>
 </html>
