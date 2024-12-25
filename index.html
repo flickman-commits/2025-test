@@ -38,6 +38,14 @@
             font-size: 20px;
             color: #000000;
         }
+        .movie a {
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
+        }
+        .movie a:hover {
+            opacity: 0.8;
+        }
     </style>
 </head>
 <body>
@@ -109,10 +117,12 @@
 
                 const moviesHTML = movies.map(movie => `
                     <div class="movie">
-                        <img src="https://image.tmdb.org/t/p/w300${movie.poster_path}" 
-                             alt="${movie.title}" 
-                             style="max-width: 200px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
-                        <div style="margin-top: 8px;">${movie.title}</div>
+                        <a href="https://www.fandango.com/search?q=${encodeURIComponent(movie.title)}" target="_blank">
+                            <img src="https://image.tmdb.org/t/p/w300${movie.poster_path}" 
+                                 alt="${movie.title}" 
+                                 style="max-width: 200px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                            <div style="margin-top: 8px;">${movie.title}</div>
+                        </a>
                     </div>
                 `).join('');
 
