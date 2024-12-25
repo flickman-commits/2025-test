@@ -29,6 +29,24 @@
     <script>
         // Fetch and display IP address and weather
         async function getIPAndWeather() {
+            function getWeatherEmoji(condition) {
+                const weatherMap = {
+                    'clear sky': '☀️',
+                    'few clouds': '🌤️',
+                    'scattered clouds': '⛅',
+                    'broken clouds': '☁️',
+                    'overcast clouds': '☁️',
+                    'light rain': '🌦️',
+                    'moderate rain': '🌧️',
+                    'heavy rain': '⛈️',
+                    'thunderstorm': '⛈️',
+                    'snow': '🌨️',
+                    'mist': '🌫️',
+                    'fog': '🌫️'
+                };
+                return weatherMap[condition.toLowerCase()] || '❓';
+            }
+
             try {
                 // Get IP address
                 const ipResponse = await fetch('https://api.ipify.org?format=json');
@@ -49,7 +67,7 @@
                 document.getElementById('weather').innerHTML = `
                     Current weather in ${weatherData.name}:<br>
                     Temperature: ${Math.round(weatherData.main.temp)}°F<br>
-                    Condition: ${weatherData.weather[0].description}<br>
+                    ${getWeatherEmoji(weatherData.weather[0].description)}<br>
                     Humidity: ${weatherData.main.humidity}%
                 `;
             } catch (error) {
