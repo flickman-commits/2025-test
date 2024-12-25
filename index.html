@@ -6,7 +6,8 @@
         body {
             font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
             font-weight: bold;
-            letter-spacing: -1.8px; /* -30 tracking converted to pixels */
+            font-size: 130%; /* Makes text 30% larger */
+            letter-spacing: -1.8px;
             margin: 0;
             height: 100vh;
             display: flex;
@@ -20,6 +21,7 @@
 <body>
     <div id="ipAddress">Loading IP address...</div>
     <div id="weather">Loading weather...</div>
+    <img src="https://images.squarespace-cdn.com/content/v1/60d922b7ba3be6375370696f/c56545ff-0c3f-44ef-9ae7-af16ecf2a7ba/Side+by+Side.png?format=1500w" alt="Company Logo" style="margin-top: 20px; max-width: 200px;">
     <script>
         // Fetch and display IP address and weather
         async function getIPAndWeather() {
