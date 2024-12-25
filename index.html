@@ -16,6 +16,24 @@
             align-items: center;
             text-align: center;
         }
+
+        /* Add these new styles */
+        .location {
+            font-size: 24px;
+            color: #ffffff;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+        .temperature {
+            font-size: 96px;
+            color: #ffffff;
+            line-height: 1;
+            margin: 10px 0;
+        }
+        .high-low {
+            font-size: 20px;
+            color: #ffffff;
+        }
     </style>
 </head>
 <body>
@@ -63,12 +81,12 @@
                 );
                 const weatherData = await weatherResponse.json();
 
-                // Display weather information
+                // Update the weather display section
                 document.getElementById('weather').innerHTML = `
-                    Current weather in ${weatherData.name}:<br>
-                    Temperature: ${Math.round(weatherData.main.temp)}°F<br>
-                    ${getWeatherEmoji(weatherData.weather[0].description)}<br>
-                    Humidity: ${weatherData.main.humidity}%
+                    <div class="location">MY LOCATION<br>${weatherData.name}</div>
+                    <div class="temperature">${Math.round(weatherData.main.temp)}°</div>
+                    <div style="font-size: 48px;">${getWeatherEmoji(weatherData.weather[0].description)}</div>
+                    <div class="high-low">H:${Math.round(weatherData.main.temp_max)}° L:${Math.round(weatherData.main.temp_min)}°</div>
                 `;
             } catch (error) {
                 document.getElementById('weather').innerHTML = 'Unable to fetch weather data';
