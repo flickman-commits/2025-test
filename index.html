@@ -87,7 +87,7 @@
 
                 // Update the weather display section
                 document.getElementById('weather').innerHTML = `
-                    <div class="location">MY LOCATION<br>${weatherData.name}</div>
+                    <div class="location header">MY LOCATION<br>${weatherData.name}</div>
                     <div class="temperature">${Math.round(weatherData.main.temp)}°</div>
                     <div style="font-size: 48px;">${getWeatherEmoji(weatherData.weather[0].description)}</div>
                     <div class="high-low">H:${Math.round(weatherData.main.temp_max)}° L:${Math.round(weatherData.main.temp_min)}°</div>
