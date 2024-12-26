@@ -64,7 +64,6 @@
 </head>
 <body>
     <div id="weather">Loading weather...</div>
-    <div id="interestRates" style="margin-top: 20px;">Loading interest rates...</div>
     <div id="topCompanies" style="margin-top: 20px;">Loading top companies...</div>
     <a href="https://www.flickman.media" target="_blank">
         <img src="https://images.squarespace-cdn.com/content/v1/60d922b7ba3be6375370696f/c56545ff-0c3f-44ef-9ae7-af16ecf2a7ba/Side+by+Side.png?format=1500w" 
@@ -116,27 +115,6 @@
             }
         }
 
-        // Add this new function
-        async function getInterestRates() {
-            try {
-                const response = await fetch(
-                    'https://api.stlouisfed.org/fred/series/observations?series_id=MORTGAGE30US&api_key=f5f9125d41f468f9df345e7985f8ea82&sort_order=desc&limit=1&file_type=json'
-                );
-                const data = await response.json();
-                const latestRate = data.observations[0];
-
-                document.getElementById('interestRates').innerHTML = `
-                    <div style="font-size: 24px;">
-                        <span style="display: block; font-weight: normal; font-size: 19px;">CURRENT MORTGAGE RATES</span>
-                        30-Year Fixed: ${parseFloat(latestRate.value).toFixed(2)}%
-                    </div>
-                `;
-            } catch (error) {
-                document.getElementById('interestRates').innerHTML = 'Unable to fetch mortgage rates';
-                console.error(error);
-            }
-        }
-
         async function getTopCompanies() {
             try {
                 // First, get the list of top companies by market cap
@@ -179,7 +157,6 @@
 
         // Update function calls at bottom of script
         getIPAndWeather();
-        getInterestRates();
         getTopCompanies();
     </script>
 </body>
