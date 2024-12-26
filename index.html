@@ -38,14 +38,6 @@
             font-size: 20px;
             color: #000000;
         }
-        .movie a {
-            text-decoration: none;
-            color: inherit;
-            cursor: pointer;
-        }
-        .movie a:hover {
-            opacity: 0.8;
-        }
         #ipAddress {
             position: fixed;
             bottom: 10px;
@@ -65,9 +57,6 @@
     <div id="weather">Loading weather...</div>
     <div id="interestRates" style="margin-top: 20px;">Loading interest rates...</div>
     <div id="census" style="margin-top: 20px;">Loading US business statistics...</div>
-    <div id="movies" style="margin-top: 20px; display: flex; gap: 20px; justify-content: center;">
-        Loading trending movies...
-    </div>
     <a href="https://www.flickman.media" target="_blank">
         <img src="https://images.squarespace-cdn.com/content/v1/60d922b7ba3be6375370696f/c56545ff-0c3f-44ef-9ae7-af16ecf2a7ba/Side+by+Side.png?format=1500w" 
              alt="Company Logo" 
@@ -79,7 +68,7 @@
             function getWeatherEmoji(condition) {
                 const weatherMap = {
                     'clear sky': '☀️',
-                    'few clouds': '🌤️',
+                    'few clouds': '��️',
                     'scattered clouds': '⛅',
                     'broken clouds': '☁️',
                     'overcast clouds': '☁️',
@@ -123,33 +112,6 @@
             }
         }
 
-        // Fetch trending movies
-        async function getTrendingMovies() {
-            try {
-                const response = await fetch(
-                    'https://api.themoviedb.org/3/trending/movie/day?api_key=7b4cdffcbad9216c1450679138f55a68'
-                );
-                const data = await response.json();
-                const movies = data.results.slice(0, 3); // Get top 3 movies
-
-                const moviesHTML = movies.map(movie => `
-                    <div class="movie">
-                        <a href="https://www.fandango.com/search?q=${encodeURIComponent(movie.title)}" target="_blank">
-                            <img src="https://image.tmdb.org/t/p/w300${movie.poster_path}" 
-                                 alt="${movie.title}" 
-                                 style="max-width: 200px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
-                            <div style="margin-top: 8px;">${movie.title}</div>
-                        </a>
-                    </div>
-                `).join('');
-
-                document.getElementById('movies').innerHTML = moviesHTML;
-            } catch (error) {
-                document.getElementById('movies').innerHTML = 'Unable to fetch movie data';
-                console.error(error);
-            }
-        }
-
         // Fetch Census Bureau data
         async function getCensusData() {
             try {
@@ -189,7 +151,6 @@
         }
 
         getIPAndWeather();
-        getTrendingMovies();
         getCensusData();
         getInterestRates();
     </script>
