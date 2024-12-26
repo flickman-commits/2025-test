@@ -63,6 +63,7 @@
 <body>
     <div id="ipAddress">Loading IP address...</div>
     <div id="weather">Loading weather...</div>
+    <div id="interestRates" style="margin-top: 20px;">Loading interest rates...</div>
     <div id="census" style="margin-top: 20px;">Loading US business statistics...</div>
     <div id="movies" style="margin-top: 20px; display: flex; gap: 20px; justify-content: center;">
         Loading trending movies...
@@ -166,9 +167,32 @@
             }
         }
 
+        // Add this new function
+        async function getInterestRates() {
+            try {
+                const response = await fetch(
+                    'https://www.freddiemac.com/pmms/docs/historicalweeklydata.json'
+                );
+                const data = await response.json();
+                const latestRates = data[0]; // Get most recent rates
+
+                document.getElementById('interestRates').innerHTML = `
+                    <div style="font-size: 24px;">
+                        <span style="display: block; font-weight: normal; font-size: 19px;">CURRENT MORTGAGE RATES</span>
+                        30-Year Fixed: ${latestRates['30yr FRM']}%<br>
+                        15-Year Fixed: ${latestRates['15yr FRM']}%
+                    </div>
+                `;
+            } catch (error) {
+                document.getElementById('interestRates').innerHTML = 'Unable to fetch interest rates';
+                console.error(error);
+            }
+        }
+
         getIPAndWeather();
         getTrendingMovies();
         getCensusData();
+        getInterestRates();
     </script>
 </body>
 </html>
