@@ -116,7 +116,6 @@
         }
 
         async function getTopCompanies() {
-            // Hardcoded list of top 5 companies with their CIK numbers
             const topCompanies = [
                 { name: 'Apple', ticker: 'AAPL', cik: '0000320193' },
                 { name: 'Microsoft', ticker: 'MSFT', cik: '0000789019' },
@@ -125,52 +124,22 @@
                 { name: 'NVIDIA', ticker: 'NVDA', cik: '0001045810' }
             ];
 
-            let html = `
-                <div style="font-size: 24px;">
-                    <span style="display: block; font-weight: normal; font-size: 19px;">TOP 5 COMPANIES P&L</span>
-                    <div class="company-list">
-            `;
-
             for (const company of topCompanies) {
                 try {
-                    // Fetch company financial data
                     const response = await fetch(`https://data.sec.gov/api/xbrl/companyfacts/CIK${company.cik}.json`, {
                         headers: {
                             'User-Agent': 'Flickman Media matt@flickmanmedia.com'
                         }
                     });
                     const data = await response.json();
-
-                    // Look for net income in the data
-                    const netIncome = data.facts['us-gaap']?.['NetIncomeLoss']?.units?.['USD']
-                        ?.sort((a, b) => new Date(b.end) - new Date(a.end))[0];
-
-                    const revenue = data.facts['us-gaap']?.['Revenues']?.units?.['USD']
-                        ?.sort((a, b) => new Date(b.end) - new Date(a.end))[0];
-
-                    html += `
-                        <div>
-                            <a href="https://www.sec.gov/edgar/browse/?CIK=${company.cik}" target="_blank">
-                                ${company.name} (${company.ticker})
-                            </a>
-                            ${revenue ? `<br>Revenue: $${(revenue.val / 1000000000).toFixed(2)}B` : ''}
-                            ${netIncome ? `<br>Net Income: $${(netIncome.val / 1000000000).toFixed(2)}B` : ''}
-                        </div>
-                        <br>
-                    `;
+                    console.log(`${company.name} data:`, data);
                 } catch (error) {
                     console.error(`Error fetching data for ${company.name}:`, error);
-                    html += `
-                        <div>
-                            ${company.name} (${company.ticker}): Data unavailable
-                        </div>
-                        <br>
-                    `;
                 }
             }
 
-            html += `</div></div>`;
-            document.getElementById('topCompanies').innerHTML = html;
+            // Just display a simple message in the UI
+            document.getElementById('topCompanies').innerHTML = 'Check console for company data';
         }
 
         // Update function calls at bottom of script
