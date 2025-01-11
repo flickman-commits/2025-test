@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <style>
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-weight: bold;
+            font-size: 150%; /* Makes text 30% larger */
+            letter-spacing: -1.5px;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* Add these new styles */
+        .location {
+            font-size: 24px;
+            color: #000000;
+            margin-bottom: 10px;
+        }
+        .location .header {
+            font-weight: normal;
+            font-size: 19px; /* 20% smaller than the city name */
+            display: block; /* Makes it take its own line */
+        }
+        .temperature {
+            font-size: 96px;
+            color: #000000;
+            line-height: 1;
+            margin: 10px 0;
+        }
+        .high-low {
+            font-size: 20px;
+            color: #000000;
+        }
+        .bottom-logo {
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            max-width: 200px;
+        }
+        a img:hover {
+            opacity: 0.8;
+            transition: opacity 0.2s ease;
+        }
+        .company-list {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+        .company-list a {
+            color: #000000;
+            text-decoration: none;
+        }
+        .company-list a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div id="weather">Loading weather...</div>
+    <div id="topCompanies" style="margin-top: 20px;">Loading top companies...</div>
+    <a href="https://www.flickman.media" target="_blank">
+        <img src="https://images.squarespace-cdn.com/content/v1/60d922b7ba3be6375370696f/c56545ff-0c3f-44ef-9ae7-af16ecf2a7ba/Side+by+Side.png?format=1500w" 
+             alt="Company Logo" 
+             class="bottom-logo">
+    </a>
+    <script>
+        // Fetch and display IP address and weather
+        async function getIPAndWeather() {
+            function getWeatherEmoji(condition) {
+                const weatherMap = {
+                    'clear sky': '☀️',
+                    'few clouds': '��️',
+                    'scattered clouds': '⛅',
+                    'broken clouds': '☁️',
+                    'overcast clouds': '☁️',
+                    'light rain': '🌦️',
+                    'moderate rain': '🌧️',
+                    'heavy rain': '⛈️',
+                    'thunderstorm': '⛈️',
+                    'snow': '🌨️',
+                    'mist': '🌫️',
+                    'fog': '🌫️'
+                };
+                return weatherMap[condition.toLowerCase()] || '❓';
+            }
+
+            try {
+                // Get location from IP
+                const geoResponse = await fetch('https://ipapi.co/json/');
+                const geoData = await geoResponse.json();
+
+                // Get weather data
+                const weatherResponse = await fetch(
+                    `https://api.openweathermap.org/data/2.5/weather?lat=${geoData.latitude}&lon=${geoData.longitude}&units=imperial&appid=5f5afb04556ad9da995ad557d60ac6cd`
+                );
+                const weatherData = await weatherResponse.json();
+
+                // Update the weather display section
+                document.getElementById('weather').innerHTML = `
+                    <div class="location"><span class="header">MY LOCATION</span>${weatherData.name}</div>
+                    <div class="temperature">${Math.round(weatherData.main.temp)}°</div>
+                    <div style="font-size: 48px;">${getWeatherEmoji(weatherData.weather[0].description)}</div>
+                    <div class="high-low">H:${Math.round(weatherData.main.temp_max)}° L:${Math.round(weatherData.main.temp_min)}°</div>
+                `;
+            } catch (error) {
+                document.getElementById('weather').innerHTML = 'Unable to fetch weather data';
+                console.error(error);
+            }
+        }
+
+        async function getTopCompanies() {
+            // Try just Apple first
+            try {
+                const response = await fetch('https://data.sec.gov/api/xbrl/companyfacts/CIK0000320193.json', {
+                    headers: {
+                        'User-Agent': 'Flickman Media matt@flickmanmedia.com'
+                    }
+                });
+                const data = await response.json();
+                console.log('Apple data:', data);
+            } catch (error) {
+                console.error('Error fetching Apple data:', error);
+            }
+
+            document.getElementById('topCompanies').innerHTML = 'Check console for Apple data';
+        }
+
+        // Update function calls at bottom of script
+        getIPAndWeather();
+        getTopCompanies();
+    </script>
+</body>
+</html>
